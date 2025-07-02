@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: tg-bot-crusade-msg
+    runtime: node
+    plan: free
+    region: frankfurt
+    rootDir: app
+    buildCommand: npm install
+    startCommand: node src/bot.js
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
