@@ -1,0 +1,30 @@
+@font-face {
+    font-family: 'NewZelekC';
+    src: url('NewZelekC.woff2') format('woff2'),
+        url('NewZelekC.woff') format('woff'),
+        url('NewZelekC.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Kereru';
+    src: url('Kereru.woff2') format('woff2'),
+        url('Kereru.woff') format('woff'),
+        url('Kereru.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Ruslan Display';
+    src: url('RuslanDisplay.woff2') format('woff2'),
+        url('RuslanDisplay.woff') format('woff'),
+        url('RuslanDisplay.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
