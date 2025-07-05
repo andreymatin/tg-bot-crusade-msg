@@ -58,7 +58,7 @@ const styles = {
     return lines;
   }
 
-  // New function: split text by existing line breaks and wrap each paragraph separately
+  // Split text by existing line breaks and wrap each paragraph separately
   function wrapTextByLines(text, maxWidth, ctx) {
     const lines = [];
     const paragraphs = text.split(/\r?\n/); // Split text on newline characters
@@ -116,14 +116,15 @@ const styles = {
   }
 
   bot.on('message', async (ctx) => {
+    // Extract text only from the message; ignore all attachments (photos, files, etc.)
     let text = ctx.message.text;
+    if (!text) return; // Ignore messages without text
+
     const fromId = ctx.from.id;
 
-    // If the message is a forwarded message, prepare a quote with author
+    // If the message is forwarded, prepare a quote with author name
     if (ctx.message.forward_date) {
-      const quoteText = ctx.message.text?.trim();
-      if (!quoteText) return;
-
+      const quoteText = text.trim();
       let author = null;
       if (ctx.message.forward_from) {
         author = ctx.message.forward_from.first_name;
@@ -137,10 +138,10 @@ const styles = {
       }
     }
 
-    if (!text) return;
-
+    // Save user input text for later image generation
     userInputs.set(fromId, text);
 
+    // Prepare inline keyboard with style options
     const buttons = Object.entries(styles).map(([key, style]) =>
       [Markup.button.callback(style.label, `style:${key}`)]
     );
