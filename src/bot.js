@@ -95,9 +95,30 @@ const styles = {
     return canvas.toBuffer('image/png');
   }
 
-  bot.on('text', async (ctx) => {
-    const text = ctx.message.text;
-    userInputs.set(ctx.from.id, text);
+  bot.on('message', async (ctx) => {
+    let text = ctx.message.text;
+    const fromId = ctx.from.id;
+
+    // Если сообщение переслано от пользователя или канала
+    if (ctx.message.forward_date) {
+      const quoteText = ctx.message.text?.trim();
+      if (!quoteText) return;
+
+      let author = null;
+      if (ctx.message.forward_from) {
+        author = ctx.message.forward_from.first_name;
+      } else if (ctx.message.forward_from_chat) {
+        author = ctx.message.forward_from_chat.title;
+      }
+
+      if (author) {
+        text = `"${quoteText}"\n(с) ${author}`;
+      }
+    }
+
+    if (!text) return;
+
+    userInputs.set(fromId, text);
     const buttons = Object.entries(styles).map(([key, style]) =>
       [Markup.button.callback(style.label, `style:${key}`)]
     );
@@ -116,6 +137,7 @@ const styles = {
   bot.launch();
 })();
 
+// HTTP keep-alive (e.g. for Render)
 const PORT = process.env.PORT || 3000;
 http.createServer((req, res) => {
   res.writeHead(200);
